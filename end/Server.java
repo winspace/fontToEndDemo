@@ -34,6 +34,7 @@ public class Server {
 
                     // 响应客户端请求
                     String response = "Hello from server!";
+                    String jsonResponse = "{\"message\": \"Hello from server!\", \"status\": 200}";
                     out.println("HTTP/1.1 200 OK");
                     out.println("Content-Type: text/plain");
 
@@ -43,7 +44,7 @@ public class Server {
                     out.println("Access-Control-Allow-Headers: Content-Type");
 
                     out.println();
-                    out.println(response);
+                    out.println(jsonResponse);
                     System.out.println("Sent response: " + response);
                 } else {
                     // 如果请求路径不匹配，返回404 Not Found
