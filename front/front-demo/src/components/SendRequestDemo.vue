@@ -9,6 +9,7 @@
       :before-upload="beforeUpload"
       :on-success="onSuccess" 
       :on-error="onError"
+      multiple
     >
       <el-button size="small" type="primary">点击上传</el-button>
     </el-upload>
@@ -31,7 +32,7 @@
     name: 'SendRequestDemo',
     data(){
         return {
-            fileList:[{"fileName":1}]
+            fileList:[]
         }
     },  
     methods:{
