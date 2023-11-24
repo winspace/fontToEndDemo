@@ -45,6 +45,8 @@
             return true;
         },
         onSuccess(response, file) {
+            //成功后调用刷新列表
+            this.refreshFileList()
             // 上传成功后的回调方法
             console.log('onSuccess', response, file);
         },
