@@ -88,12 +88,14 @@ public class DatabaseController {
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT filename FROM files")) {
+             ResultSet resultSet = statement.executeQuery("SELECT fileId, filename FROM files")) {
 
             while (resultSet.next()) {
                 String fileName = resultSet.getString("filename");
+                String fileId = resultSet.getString("fileId");
                 JSONObject object1 = new JSONObject();
                 object1.put("fileName",fileName);
+                object1.put("fileId",fileId);
                 jsonArray.put(object1);
             }
         } catch (SQLException e) {
@@ -103,22 +105,24 @@ public class DatabaseController {
         return jsonArray.toString();
     }
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
+    @GetMapping("/download/{fileId}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileId) {
+
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM files WHERE filename = ?")) {
-            statement.setString(1, fileName);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM files WHERE fileId = ?")) {
+            statement.setLong(1, Long.parseLong(fileId));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 // Retrieve the file content from the database
                 Blob fileContent = resultSet.getBlob("file_content");
+                long myFileId = resultSet.getLong("fileId");
                 // Convert the file content to a byte array
                 byte[] bytes = fileContent.getBytes(1, (int) fileContent.length());
                 // Create a ByteArrayResource
                 ByteArrayResource resource = new ByteArrayResource(bytes);
                 // Set the HTTP headers
                 HttpHeaders headers = new HttpHeaders();
-                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
+                headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileId=\"" + myFileId + "\"");
                 headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
                 headers.add(HttpHeaders.CONTENT_LENGTH, String.valueOf(bytes.length));
                 // Return the ResponseEntity

@@ -16,7 +16,7 @@
       <el-table-column prop="fileName" label="文件名"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="downloadFile(scope.row.fileName)">下载</el-button>
+          <el-button type="primary" size="small" @click="downloadFile(scope.row.fileId,scope.row.fileName)">下载</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -107,12 +107,12 @@
                 console.error(error);
             });
         },
-        downloadFile(filename) {
+        downloadFile(fileId,fileName) {
             // 下载文件的逻辑
             // 创建一个链接，并设置其 href 属性为下载文件的后端接口路径
             const link = document.createElement('a');
-            link.href = `/api/download/${filename}`;
-            link.download = filename;
+            link.href = `/api/download/${fileId}`;
+            link.download = fileName;
             // 触发点击事件来下载文件
             link.click();
         }
