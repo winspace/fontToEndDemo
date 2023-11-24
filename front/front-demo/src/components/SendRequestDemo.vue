@@ -18,6 +18,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="downloadFile(scope.row.fileId,scope.row.fileName)">下载</el-button>
+          <el-button type="primary" size="small" @click="deleteFile(scope.row.fileId,scope.row.fileName)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,6 +102,23 @@
             .then(response => {
                 // 请求成功，处理响应数据
                 this.fileList = response.data
+                
+            })
+            .catch(error => {
+                // 请求失败，处理错误
+                console.error(error);
+            });
+        },
+        deleteFile(fileId){
+            axios.get('/api/delete/'+fileId, { 
+            // 请求体数据
+            // 可以是对象、数组或其他类型的数据
+            })
+            .then(response => {
+                this.refreshFileList()
+                console.log("res",response)
+                // 请求成功，处理响应数据
+                // this.fileList = response.data
                 
             })
             .catch(error => {

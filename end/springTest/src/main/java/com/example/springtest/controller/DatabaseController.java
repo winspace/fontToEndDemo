@@ -63,9 +63,9 @@ public class DatabaseController {
             // 生成唯一的文件名
             String fileName = file.getOriginalFilename();
             // 构建目标文件对象
-            File destFile = new File(fileName);
+//            File destFile = new File(fileName);
             // 将上传文件保存到目标文件
-            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(destFile));
+//            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(destFile));
 
             // 将文件信息插入数据库
             try (Connection connection = dataSource.getConnection();
@@ -129,6 +129,25 @@ public class DatabaseController {
                 return ResponseEntity.ok()
                         .headers(headers)
                         .body(resource);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/delete/{fileId}")
+    public ResponseEntity<Resource> deleteFile(@PathVariable String fileId) {
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM files WHERE fileId = ?")) {
+            statement.setLong(1, Long.parseLong(fileId));
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                // 文件删除成功
+                // 返回适当的响应
+                return ResponseEntity.ok().build();
             }
         } catch (SQLException e) {
             e.printStackTrace();
