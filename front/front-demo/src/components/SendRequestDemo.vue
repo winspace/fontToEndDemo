@@ -15,6 +15,11 @@
     </el-upload>
     <el-table :data="fileList" height="300">
       <el-table-column prop="fileName" label="文件名"></el-table-column>
+      <el-table-column prop="fileSize" label="文件名">
+        <template slot-scope="scope">
+            {{ scope.row.fileSize }}MB
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button type="primary" size="small" @click="downloadFile(scope.row.fileId,scope.row.fileName)">下载</el-button>

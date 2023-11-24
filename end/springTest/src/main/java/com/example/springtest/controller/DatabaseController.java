@@ -62,16 +62,18 @@ public class DatabaseController {
         try {
             // 生成唯一的文件名
             String fileName = file.getOriginalFilename();
-            // 构建目标文件对象
-//            File destFile = new File(fileName);
-            // 将上传文件保存到目标文件
-//            FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(destFile));
+            // 获取文件大小（以字节为单位）
+            long fileSizeBytes = file.getSize();
+            // 转换文件大小为兆字节
+            double fileSizeMB = (double) fileSizeBytes / (1024 * 1024);
+            String formattedValue = String.format("%.3f", fileSizeMB);
 
             // 将文件信息插入数据库
             try (Connection connection = dataSource.getConnection();
-                 PreparedStatement statement = connection.prepareStatement("INSERT INTO files (filename, file_content) VALUES (?, ?)")) {
+                 PreparedStatement statement = connection.prepareStatement("INSERT INTO files (filename, file_content,fileSize) VALUES (?, ?, ?)")) {
                 statement.setString(1, fileName);
                 statement.setBinaryStream(2, file.getInputStream());
+                statement.setString(3, formattedValue);
                 statement.executeUpdate();
             }
 
@@ -88,14 +90,16 @@ public class DatabaseController {
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT fileId, filename FROM files")) {
+             ResultSet resultSet = statement.executeQuery("SELECT fileId, filename, fileSize FROM files")) {
 
             while (resultSet.next()) {
                 String fileName = resultSet.getString("filename");
                 String fileId = resultSet.getString("fileId");
+                String fileSize = resultSet.getString("fileSize");
                 JSONObject object1 = new JSONObject();
                 object1.put("fileName",fileName);
                 object1.put("fileId",fileId);
+                object1.put("fileSize",fileSize);
                 jsonArray.put(object1);
             }
         } catch (SQLException e) {
