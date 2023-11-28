@@ -1,5 +1,6 @@
 <template>
     <div>
+     <el-button size="small" type="primary" @click="notifyToMe">this.$notify</el-button>
      <el-button size="small" type="primary" @click="sendRequest">发送请求hello</el-button>
      <el-button size="small" type="primary" @click="sendRequestGreet">打招呼json</el-button>
      <el-button size="small" type="primary" @click="sendRequestDatabase">数据库请求</el-button>
@@ -42,6 +43,18 @@
         }
     },  
     methods:{
+        notifyToMe(){
+            // this.$notify.success("成功")
+            // this.$notify.success({
+            //     title:'标题',
+            //     message:'标题内容',
+            // })
+            this.$notify.success({
+                title:'HTML',
+                dangerouslyUseHTMLString:true,
+                message:'<div style="color:red">红色<div/>'
+            })
+        },  
         beforeUpload(file) {
             // 在上传前对文件进行验证，例如文件类型、大小等
             // 如果验证失败，返回 false 可以阻止文件上传
