@@ -1,5 +1,6 @@
 <template>
     <div>
+    <el-button @click="jumpToIdiom">成语系统</el-button>
      <el-button size="small" type="primary" @click="notifyToMe">this.$notify</el-button>
      <el-button size="small" type="primary" @click="sendRequest">发送请求hello</el-button>
      <el-button size="small" type="primary" @click="sendRequestGreet">打招呼json</el-button>
@@ -43,6 +44,10 @@
         }
     },  
     methods:{
+        //跳转到成语系统
+        jumpToIdiom(){
+            this.$router.push('/idiomPage')
+        },
         notifyToMe(){
             // this.$notify.success("成功")
             // this.$notify.success({

@@ -1,20 +1,13 @@
 <template>
   <div id="app">
-    <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <SendRequestDemo/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import SendRequestDemo from './components/SendRequestDemo.vue'
-
 export default {
   name: 'App',
   components: {
-    // HelloWorld,
-    SendRequestDemo
   }
 }
 </script>
