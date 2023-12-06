@@ -49,11 +49,6 @@
             this.$router.push('/idiomPage')
         },
         notifyToMe(){
-            // this.$notify.success("成功")
-            // this.$notify.success({
-            //     title:'标题',
-            //     message:'标题内容',
-            // })
             this.$notify.success({
                 title:'HTML',
                 dangerouslyUseHTMLString:true,
@@ -61,9 +56,6 @@
             })
         },  
         beforeUpload(file) {
-            // 在上传前对文件进行验证，例如文件类型、大小等
-            // 如果验证失败，返回 false 可以阻止文件上传
-            // 如果验证成功，返回 true 允许文件上传
             console.log('beforeUpload', file);
             return true;
         },
